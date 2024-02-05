@@ -10,6 +10,7 @@ import com.rootapp.payloads.ApiResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // handling resource not found exception
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException ex) {
 

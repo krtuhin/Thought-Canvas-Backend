@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    // create user in the database
     @Override
     public UserDto createUser(UserDto user) {
 
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
         return this.userToDto(save);
     }
 
+    // update user in the database
     @Override
     public UserDto updateUser(UserDto userDto, Long userId) {
 
@@ -46,6 +48,7 @@ public class UserServiceImpl implements UserService {
         return userToDto(updatedUser);
     }
 
+    // fetch user from database by id
     @Override
     public UserDto getUserById(Long userId) {
 
@@ -55,6 +58,7 @@ public class UserServiceImpl implements UserService {
         return this.userToDto(user);
     }
 
+    // fetch user from database by email
     @Override
     public UserDto getUserByEmail(String email) {
 
@@ -62,6 +66,7 @@ public class UserServiceImpl implements UserService {
         return this.userToDto(user);
     }
 
+    // fetch all user from database
     @Override
     public List<UserDto> getAllUsers() {
 
@@ -72,6 +77,7 @@ public class UserServiceImpl implements UserService {
         return list;
     }
 
+    // delete user from database
     @Override
     public void deleteUser(Long userId) {
 
@@ -81,6 +87,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository.delete(user);
     }
 
+    // converting userDto to user type
     private User dtoToUser(UserDto userDto) {
 
         // return User.builder()
@@ -93,6 +100,7 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(userDto, User.class);
     }
 
+    // converting user to userDto type
     private UserDto userToDto(User user) {
 
         return UserDto.builder()
