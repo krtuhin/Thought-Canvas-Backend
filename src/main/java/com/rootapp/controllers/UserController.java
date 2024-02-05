@@ -18,6 +18,8 @@ import com.rootapp.payloads.ApiResponse;
 import com.rootapp.payloads.UserDto;
 import com.rootapp.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -27,7 +29,7 @@ public class UserController {
 
     // POST -> create user
     @PostMapping("/")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
 
         UserDto createdUserDto = this.userService.createUser(userDto);
 
@@ -36,7 +38,7 @@ public class UserController {
 
     // PUT -> update user
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable("userId") Long userId) {
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable Long userId) {
 
         UserDto updatedUserDto = this.userService.updateUser(userDto, userId);
 
