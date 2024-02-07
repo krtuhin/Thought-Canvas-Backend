@@ -105,8 +105,9 @@ public class PostController {
     }
 
     // GET -> search posts by keyword
-    @GetMapping("posts")
-    public ResponseEntity<List<PostDto>> searchPostsByKeyword(@RequestParam String keyword) {
+    @GetMapping("posts/search")
+    public ResponseEntity<List<PostDto>> searchPostsByKeyword(
+            @RequestParam(value = "title", required = true) String keyword) {
 
         List<PostDto> posts = this.postService.searchPosts(keyword);
 
