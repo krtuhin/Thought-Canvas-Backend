@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.rootapp.entities.Category;
@@ -91,10 +92,10 @@ public class PostServiceImpl implements PostService {
 
         // get all post with pagination
         @Override
-        public PostResponse getAllPosts(Integer pageNumber, Integer pageSize) {
+        public PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy) {
 
                 // create pageable
-                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
 
                 // getting page
                 Page<Post> page = this.postRepository.findAll(pageable);
