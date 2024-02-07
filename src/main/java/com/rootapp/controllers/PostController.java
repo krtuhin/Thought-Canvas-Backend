@@ -60,9 +60,10 @@ public class PostController {
     public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(value = "page_number", defaultValue = "0", required = false) Integer pageNumber,
             @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "sort_by", defaultValue = "id", required = false) String sortBy) {
+            @RequestParam(value = "sort_by", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sort_in", defaultValue = "asc", required = false) String sortIn) {
 
-        PostResponse postResponse = this.postService.getAllPosts(pageNumber, pageSize, sortBy);
+        PostResponse postResponse = this.postService.getAllPosts(pageNumber, pageSize, sortBy, sortIn);
 
         return ResponseEntity.ok(postResponse);
     }
@@ -80,9 +81,11 @@ public class PostController {
     @GetMapping("user/{userId}/posts")
     public ResponseEntity<PostResponse> getAllPostsByUser(@PathVariable Long userId,
             @RequestParam(value = "page_number", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize) {
+            @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam(value = "sort_by", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sort_in", defaultValue = "asc", required = false) String sortIn) {
 
-        PostResponse postResponse = this.postService.getAllPostsByUser(userId, pageNumber, pageSize);
+        PostResponse postResponse = this.postService.getAllPostsByUser(userId, pageNumber, pageSize, sortBy, sortIn);
 
         return ResponseEntity.ok(postResponse);
     }
@@ -91,9 +94,12 @@ public class PostController {
     @GetMapping("category/{categoryId}/posts")
     public ResponseEntity<PostResponse> getAllPostsBycategory(@PathVariable Long categoryId,
             @RequestParam(value = "page_number", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize) {
+            @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam(value = "sort_by", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sort_in", defaultValue = "asc", required = false) String sortIn) {
 
-        PostResponse postrResponse = this.postService.getAllPostsByCategory(categoryId, pageNumber, pageSize);
+        PostResponse postrResponse = this.postService.getAllPostsByCategory(categoryId, pageNumber, pageSize, sortBy,
+                sortIn);
 
         return ResponseEntity.ok(postrResponse);
     }

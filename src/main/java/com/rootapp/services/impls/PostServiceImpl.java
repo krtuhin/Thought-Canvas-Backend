@@ -90,12 +90,16 @@ public class PostServiceImpl implements PostService {
                 return this.modelMapper.map(post, PostDto.class);
         }
 
-        // get all post with pagination
+        // get all post with pagination and sorting
         @Override
-        public PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy) {
+        public PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortIn) {
 
-                // create pageable
-                Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
+                // sorting based on condition
+                Sort sort = (sortIn.equalsIgnoreCase("desc")) ? Sort.by(sortBy).descending()
+                                : Sort.by(sortBy).ascending();
+
+                // create pageable with sorting
+                Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
                 // getting page
                 Page<Post> page = this.postRepository.findAll(pageable);
@@ -128,15 +132,20 @@ public class PostServiceImpl implements PostService {
                 this.postRepository.delete(post);
         }
 
-        // get all posts by user with pagination
+        // get all posts by user with pagination and sorting
         @Override
-        public PostResponse getAllPostsByUser(Long userId, Integer pageNumber, Integer pageSize) {
+        public PostResponse getAllPostsByUser(Long userId, Integer pageNumber, Integer pageSize, String sortBy,
+                        String sortIn) {
 
                 User user = this.userRepository.findById(userId)
                                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
 
-                // create pageable by page number and page size
-                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                // sorting based on condition
+                Sort sort = (sortIn.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending()
+                                : Sort.by(sortBy).descending();
+
+                // create pageable by page number and page size after sorting
+                Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
                 // getting page
                 Page<Post> page = this.postRepository.findByUser(user, pageable);
@@ -156,14 +165,19 @@ public class PostServiceImpl implements PostService {
                 return postResponse;
         }
 
-        // get all posts by category with pagination
+        // get all posts by category with pagination and sorting
         @Override
-        public PostResponse getAllPostsByCategory(Long categoryId, Integer pageNumber, Integer pageSize) {
+        public PostResponse getAllPostsByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy,
+                        String sortIn) {
 
                 Category category = this.categoryRepository.findById(categoryId)
                                 .orElseThrow(() -> new ResourceNotFoundException("Category", "Id", categoryId));
 
-                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                // sorting based on condition
+                Sort sort = (sortIn.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending()
+                                : Sort.by(sortBy).descending();
+
+                Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
                 Page<Post> page = this.postRepository.findByCategory(category, pageable);
 
