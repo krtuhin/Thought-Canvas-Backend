@@ -16,6 +16,7 @@ import com.rootapp.entities.Post;
 import com.rootapp.entities.User;
 import com.rootapp.exceptions.ResourceNotFoundException;
 import com.rootapp.payloads.PostDto;
+import com.rootapp.payloads.PostResponse;
 import com.rootapp.repositories.CategoryRepository;
 import com.rootapp.repositories.PostRepository;
 import com.rootapp.repositories.UserRepository;
@@ -88,20 +89,32 @@ public class PostServiceImpl implements PostService {
                 return this.modelMapper.map(post, PostDto.class);
         }
 
-        // get all post
+        // get all post with pagination
         @Override
-        public List<PostDto> getAllPosts(Integer pageNumber, Integer pageSize) {
+        public PostResponse getAllPosts(Integer pageNumber, Integer pageSize) {
 
+                // create pageable
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
+                // getting page
                 Page<Post> page = this.postRepository.findAll(pageable);
 
+                // list of posts from page
                 List<Post> posts = page.getContent();
 
                 List<PostDto> postDtos = posts.stream()
                                 .map(post -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
 
-                return postDtos;
+                // create custom post response
+                PostResponse postResponse = new PostResponse();
+                postResponse.setContent(postDtos);
+                postResponse.setPageNumber(page.getNumber());
+                postResponse.setPageSize(page.getSize());
+                postResponse.setTotalElements(page.getTotalElements());
+                postResponse.setTotalPages(page.getTotalPages());
+                postResponse.setLastPage(page.isLast());
+
+                return postResponse;
         }
 
         // delete post
@@ -114,30 +127,58 @@ public class PostServiceImpl implements PostService {
                 this.postRepository.delete(post);
         }
 
-        // get all posts by user
+        // get all posts by user with pagination
         @Override
-        public List<PostDto> getAllPostsByUser(Long userId) {
+        public PostResponse getAllPostsByUser(Long userId, Integer pageNumber, Integer pageSize) {
 
                 User user = this.userRepository.findById(userId)
                                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
 
-                List<PostDto> posts = this.postRepository.findByUser(user).stream()
+                // create pageable by page number and page size
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+                // getting page
+                Page<Post> page = this.postRepository.findByUser(user, pageable);
+
+                List<PostDto> postDtos = page.getContent().stream()
                                 .map(post -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
 
-                return posts;
+                // custom post response
+                PostResponse postResponse = new PostResponse();
+                postResponse.setContent(postDtos);
+                postResponse.setPageNumber(page.getNumber());
+                postResponse.setPageSize(page.getSize());
+                postResponse.setTotalElements(page.getTotalElements());
+                postResponse.setTotalPages(page.getTotalPages());
+                postResponse.setLastPage(page.isLast());
+
+                return postResponse;
         }
 
-        // get all posts by category
+        // get all posts by category with pagination
         @Override
-        public List<PostDto> getAllPostsByCategory(Long categoryId) {
+        public PostResponse getAllPostsByCategory(Long categoryId, Integer pageNumber, Integer pageSize) {
 
                 Category category = this.categoryRepository.findById(categoryId)
                                 .orElseThrow(() -> new ResourceNotFoundException("Category", "Id", categoryId));
 
-                List<PostDto> posts = this.postRepository.findByCategory(category).stream()
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+                Page<Post> page = this.postRepository.findByCategory(category, pageable);
+
+                List<PostDto> postDtos = page.stream()
                                 .map(post -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
 
-                return posts;
+                // custom post response
+                PostResponse postResponse = new PostResponse();
+                postResponse.setContent(postDtos);
+                postResponse.setPageNumber(page.getNumber());
+                postResponse.setPageSize(page.getSize());
+                postResponse.setTotalElements(page.getTotalElements());
+                postResponse.setTotalPages(page.getTotalPages());
+                postResponse.setLastPage(page.isLast());
+
+                return postResponse;
         }
 
         // search posts by keywords

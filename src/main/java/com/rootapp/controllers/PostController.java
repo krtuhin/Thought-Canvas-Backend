@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rootapp.payloads.ApiResponse;
 import com.rootapp.payloads.PostDto;
+import com.rootapp.payloads.PostResponse;
 import com.rootapp.services.PostService;
 
 @RestController
@@ -54,15 +55,15 @@ public class PostController {
         return ResponseEntity.ok(postDto);
     }
 
-    // GET -> get all posts
+    // GET -> get all posts with pagination
     @GetMapping("posts/")
-    public ResponseEntity<List<PostDto>> getAllPosts(
+    public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(value = "page_number", defaultValue = "0", required = false) Integer pageNumber,
             @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize) {
 
-        List<PostDto> postDtos = this.postService.getAllPosts(pageNumber, pageSize);
+        PostResponse postResponse = this.postService.getAllPosts(pageNumber, pageSize);
 
-        return ResponseEntity.ok(postDtos);
+        return ResponseEntity.ok(postResponse);
     }
 
     // DELETE -> delete post
@@ -74,22 +75,26 @@ public class PostController {
         return ResponseEntity.ok(ApiResponse.builder().message("post deleted successfully").success(true).build());
     }
 
-    // GET -> get all posts by user
-    @GetMapping("user/{userId}/posts/")
-    public ResponseEntity<List<PostDto>> getAllPostsByUser(@PathVariable Long userId) {
+    // GET -> get all posts by user with pagination
+    @GetMapping("user/{userId}/posts")
+    public ResponseEntity<PostResponse> getAllPostsByUser(@PathVariable Long userId,
+            @RequestParam(value = "page_number", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize) {
 
-        List<PostDto> posts = this.postService.getAllPostsByUser(userId);
+        PostResponse postResponse = this.postService.getAllPostsByUser(userId, pageNumber, pageSize);
 
-        return ResponseEntity.ok(posts);
+        return ResponseEntity.ok(postResponse);
     }
 
-    // GET -> get all posts by category
-    @GetMapping("category/{categoryId}/posts/")
-    public ResponseEntity<List<PostDto>> getAllPostsBycategory(@PathVariable Long categoryId) {
+    // GET -> get all posts by category with pagination
+    @GetMapping("category/{categoryId}/posts")
+    public ResponseEntity<PostResponse> getAllPostsBycategory(@PathVariable Long categoryId,
+            @RequestParam(value = "page_number", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize) {
 
-        List<PostDto> posts = this.postService.getAllPostsByCategory(categoryId);
+        PostResponse postrResponse = this.postService.getAllPostsByCategory(categoryId, pageNumber, pageSize);
 
-        return ResponseEntity.ok(posts);
+        return ResponseEntity.ok(postrResponse);
     }
 
     // GET -> search posts by keyword
