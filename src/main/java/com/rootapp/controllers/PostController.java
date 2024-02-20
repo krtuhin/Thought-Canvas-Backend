@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rootapp.config.AppConstants;
 import com.rootapp.payloads.ApiResponse;
 import com.rootapp.payloads.PostDto;
 import com.rootapp.payloads.PostResponse;
@@ -58,10 +59,10 @@ public class PostController {
     // GET -> get all posts with pagination
     @GetMapping("posts/")
     public ResponseEntity<PostResponse> getAllPosts(
-            @RequestParam(value = "page_number", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "sort_by", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(value = "sort_in", defaultValue = "asc", required = false) String sortIn) {
+            @RequestParam(value = AppConstants.PAGE_NUMBER, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = AppConstants.PAGE_SIZE, defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = AppConstants.SORT_BY, defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = AppConstants.SORT_IN, defaultValue = AppConstants.DEFAULT_SORT_IN, required = false) String sortIn) {
 
         PostResponse postResponse = this.postService.getAllPosts(pageNumber, pageSize, sortBy, sortIn);
 
@@ -80,10 +81,10 @@ public class PostController {
     // GET -> get all posts by user with pagination
     @GetMapping("user/{userId}/posts")
     public ResponseEntity<PostResponse> getAllPostsByUser(@PathVariable Long userId,
-            @RequestParam(value = "page_number", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "sort_by", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(value = "sort_in", defaultValue = "asc", required = false) String sortIn) {
+            @RequestParam(value = AppConstants.PAGE_NUMBER, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = AppConstants.PAGE_SIZE, defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = AppConstants.SORT_BY, defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = AppConstants.SORT_IN, defaultValue = AppConstants.DEFAULT_SORT_IN, required = false) String sortIn) {
 
         PostResponse postResponse = this.postService.getAllPostsByUser(userId, pageNumber, pageSize, sortBy, sortIn);
 
@@ -93,10 +94,10 @@ public class PostController {
     // GET -> get all posts by category with pagination
     @GetMapping("category/{categoryId}/posts")
     public ResponseEntity<PostResponse> getAllPostsBycategory(@PathVariable Long categoryId,
-            @RequestParam(value = "page_number", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "page_size", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "sort_by", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(value = "sort_in", defaultValue = "asc", required = false) String sortIn) {
+            @RequestParam(value = AppConstants.PAGE_NUMBER, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = AppConstants.PAGE_SIZE, defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = AppConstants.SORT_BY, defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = AppConstants.SORT_IN, defaultValue = AppConstants.DEFAULT_SORT_IN, required = false) String sortIn) {
 
         PostResponse postrResponse = this.postService.getAllPostsByCategory(categoryId, pageNumber, pageSize, sortBy,
                 sortIn);
