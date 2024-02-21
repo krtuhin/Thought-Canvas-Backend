@@ -7,6 +7,7 @@ public class AppConstants {
     public static final String PAGE_SIZE = "page_size";
     public static final String SORT_BY = "sort_by";
     public static final String SORT_IN = "sort_in";
+    public static final String IMAGE = "image";
 
     // parameter default values
     public static final String DEFAULT_PAGE_NUMBER = "0";
