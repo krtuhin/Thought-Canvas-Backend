@@ -52,7 +52,8 @@ public class User {
     @JsonIgnore
     private List<Post> posts;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Comment> comments;
 
 }

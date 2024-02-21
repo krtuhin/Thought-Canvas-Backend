@@ -1,6 +1,7 @@
 package com.rootapp.payloads;
 
 import java.util.Date;
+import java.util.List;
 
 import com.rootapp.entities.User;
 
@@ -20,5 +21,6 @@ public class PostDto {
     private Date date;
     private CategoryDto category;
     private User user;
+    private List<CommentDto> comments;
 
 }
