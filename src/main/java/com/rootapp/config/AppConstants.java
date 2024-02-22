@@ -15,4 +15,8 @@ public class AppConstants {
     public static final String DEFAULT_SORT_BY = "id";
     public static final String DEFAULT_SORT_IN = "asc";
 
+    // user roles
+    public static final Integer ADMIN_USER = 501;
+    public static final Integer NORMAL_USER = 502;
+
 }

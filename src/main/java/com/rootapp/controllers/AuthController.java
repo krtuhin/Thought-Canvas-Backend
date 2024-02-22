@@ -1,6 +1,7 @@
 package com.rootapp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rootapp.payloads.JwtAuthRequest;
 import com.rootapp.payloads.JwtAuthResponse;
+import com.rootapp.payloads.UserDto;
 import com.rootapp.security.JwtTokenHelper;
+import com.rootapp.services.UserService;
 
 @RestController
 @RequestMapping("api/auth")
@@ -24,10 +27,22 @@ public class AuthController {
     private UserDetailsService userDetailsService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private JwtTokenHelper jwtTokenHelper;
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    // POST -> register new user
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerNewUser(@RequestBody UserDto userDto) {
+
+        UserDto registeredUser = this.userService.registerNewUser(userDto);
+
+        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+    }
 
     // POST -> login user and provide token
     @PostMapping("/login")
