@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rootapp.entities.User;
@@ -22,11 +23,17 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // create user in the database
     @Override
     public UserDto createUser(UserDto user) {
 
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+
         User save = this.userRepository.save(this.dtoToUser(user));
+
         return this.userToDto(save);
     }
 
@@ -39,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
         user.setAbout(userDto.getAbout());
         user.setImage(userDto.getImage());
 
@@ -62,7 +69,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserByEmail(String email) {
 
-        User user = this.userRepository.findByEmail(email);
+        User user = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "Email " + email, 0l));
+
         return this.userToDto(user);
     }
 
